@@ -1,0 +1,99 @@
+µcpu (Micro-CPU)
+Revision 2 (June 20 2017)
+
+=== Summary =======================
+This CPU architecture was made from scratch with heavy inspiration drawn from Notch/Mojang's 0x10c.
+
+Features:
+* 8 bit words
+* 0xFF of RAM
+* 1 register (A)
+* program counter (Not accessible)
+
+This document uses the following terms:
+* A reference is a pointer to another spot in the RAM.
+* A value is the value in RAM.
+
+Examples:
+Using 0x20 : 0xDE
+* [0x20] is 0xDE
+* 0x20 is 0x20
+
+Note:
+There is no way to directly reference a reference. e.g. [[0x20]] -> [0xDE] doesn't exist.
+
+=== Instructions ==================
+
+Instructions are 2-3 words long and are defined by the first word.
+
+Instructions are constructed in the following way:
+* xxyyoooo
+* x are 2 bits defining the first variable
+* y are 2 bits defining the second variable
+* o are 4 bits defining the operation
+
+===================================
+=== Operation Codes ===============
++======+======+=====+==============
+| NAME | oooo | VAR | DESC
++======+======+=====+==============
+|  NON | 0000 | --- | Nothing happens, usually resulting in an endless loop.
+|  SET | 0001 | a,b | Sets a to b.
+|  ADD | 0010 | a,b | Sets a to (a + b).
+|  SUB | 0011 | a,b | Sets a to (a - b).
+|  ??? | 0100 | --- | For future expansion.
+|  MUL | 0101 | a,b | Sets a to (a x b).
+|  DIV | 0110 | a,b | Sets a to floor(a / b).
+|  MOD | 0111 | a,b | Sets a to (a % b).
+|  AND | 1000 | a,b | Sets a to (a & b).
+|  OOR | 1001 | a,b | Sets a to (a | b).
+|  IFE | 1010 | a,b | Skips the next operation if a == b.
+|  IFN | 1011 | a,b | Skips the next operation if a != b.
+|  IFG | 1100 | a,b | Skips the next operation if a > b.
+|  IFL | 1101 | a,b | Skips the next operation if a < b.
+|  INV | 1110 |  a  | Sets a to ~a.
+|  JMP | 1111 |  a  | Sets the program counter to a.
++======+======+=====+==============
+
+===================================
+=== Variable References ===========
+===================================
+Variables are constructed in the following way:
+* ab
+* a determines whether or not to reference the A register. (1 = A, 0 = next word).
+* b determines whether or not to reference the register/word as a reference. (1 = [word], 0 = word)
+
+===================================
+=== Built in Monitor ==============
+===================================
+The µcpu is assembled with a built-in monitor for displaying ... graphics?
+
+Features:
+* 16x8 pixels
+* 1-bit color depth (black, white)
+
+The monitor references 16 words starting from index 0xc0.
+
+The monitor is laid out in 16 blocks as follows:
+
+ v 0xc0
++----------------+
+|0000111122223333|
+|0000111122223333|
+|4444555566667777|
+|4444555566667777|
+|88889999aaaabbbb|
+|88889999aaaabbbb|
+|ccccddddeeeeffff|
+|ccccddddeeeeffff|
++----------------+
+           0xcf ^
+
+Individual pixels are bits within each word-based block as follows:
+* abcdefg
+
++----
+|abcd
+|efgh
+
+Good luck.

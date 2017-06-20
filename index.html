@@ -1,0 +1,76 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>µcpu</title>
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			@keyframes backAndForth {
+				0% {
+					transform: perspective(600px) rotateX(30deg) rotateY(5deg) rotateZ(-5deg);
+				}
+				100% {
+					transform: perspective(600px) rotateX(30deg) rotateY(-5deg) rotateZ(5deg);
+				}
+			}
+			#cpuChip {
+				position: absolute;
+				bottom: 10%;
+				right: 10%;
+				width: 256px;
+				height: 256px;
+				background-color: green;
+				transform: perspective(600px) rotateX(45deg);
+				border: 1px outset rgb(0, 192, 0);
+				box-sizing: border-box;
+				animation: backAndForth 2s ease-in-out infinite alternate;
+				filter: drop-shadow(0px 4px 4px black);
+			}
+			#case {
+				width: 90%;
+				height: 90%;
+				background-color: gray;
+				position: absolute;
+				left: 5%;
+				top: 5%;
+				transform: translateY(-4px);
+				filter: drop-shadow(0px 4px 0px rgb(30, 30, 30)) drop-shadow(0px 4px 4px black);
+				font-family: monospace;
+				color: rgb(170, 170, 170);
+				text-align: center;
+				border: 2px outset silver;
+				box-sizing: border-box;
+				font-size: 2em;
+			}
+			#cpuWindow {
+				width: 75%;
+				height: 50%;
+				position: absolute;
+				left: 12.5%;
+				bottom: 5%;
+				image-rendering: pixelated;
+				border: 4px inset silver;
+				box-sizing: border-box;
+			}
+			#cpuText {
+				position: absolute;
+				left: 50%;
+				top: 5%;
+				transform: translateX(-50%);
+				filter: drop-shadow(-1px -1px 2px black) drop-shadow(1px 1px 2px white);
+			}
+		</style>
+		<script src="bundle.js"></script>
+	</head>
+	<body onload="init()">
+		<canvas id="aCanvas"></canvas>
+		<div id="cpuChip">
+			<div id="case">
+				<div id="cpuText">µcpu<br>1khz</div>
+				<canvas id="cpuWindow"></canvas>
+			</div>
+		</div>
+	</body>
+</html>
